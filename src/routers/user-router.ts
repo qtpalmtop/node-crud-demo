@@ -2,12 +2,36 @@ import express from 'express';
 import {Router} from 'express';
 import cookieParse from 'cookie-parser';
 
+import UserController from '../controllers/UserController';
 // import model from 'models';
 
 const router = Router();
 
 router.use(cookieParse());
 router.use(express.urlencoded({ extended: true }));
+
+/**
+ * 创建用户
+ */
+router.get('/createUser', (req, res) => {
+  console.log('in createUser: req', req);
+
+  UserController.create([
+    {
+      username: req.query.username,
+      password: req.query.password
+    }
+  ], (data: any) => {
+
+    console.log('in UserController.create', data);
+
+  });
+
+  res.end(JSON.stringify({
+    data: 'goto createUser',
+    code: 200
+  }));
+});
 
 /**
  * 增加用户
