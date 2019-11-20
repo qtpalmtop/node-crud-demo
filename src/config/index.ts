@@ -1,10 +1,10 @@
 
-import { ISystemConfig } from '../types/config';
+import { SystemConfig } from '../types/config';
 
-const systemConfig: ISystemConfig = {
+const config: SystemConfig = {
   port: 8001,
-  database: 'mongodb://localhost:27017/bookstore'
+  database: 'mongodb://localhost:27017/test'
 };
 
-export default systemConfig;
+export default config;
 

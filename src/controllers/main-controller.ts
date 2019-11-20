@@ -19,35 +19,35 @@ export class MainController {
 
     this.model.create(docs, (error: any) => {
       if (error) {
-        return callback(error);
+        return callback({data: null, code: 500});
       }
 
-      return callback(docs);
+      return callback({data: 'success', code: 200});
     });
 
   }
 
-  getById(id: any, callback: any) {
+  query(params: string, callback: any) {
 
-    this.model.findOne({_id: id}, (error: any, data: any) => {
+    this.model.findOne(params, (error: any, result: any) => {
 
       if (error) {
-        return callback(error, null);
+        return callback({data: null, code: 500});
       }
 
-      return callback(null, data);
+      return callback({data: result, code: 200});
     });
 
   }
 
   getAll(callback: any) {
-    this.model.find({}, (error: any, data: any) => {
+    this.model.find({}, (error: any, result: any) => {
 
       if (error) {
-        return callback(error, null);
+        return callback({data: null, code: 500});
       }
 
-      return callback(null, data);
+      return callback({data: result, code: 200});
 
     });
   }
@@ -57,10 +57,10 @@ export class MainController {
     this.model.remove(query, (error: any) => {
 
       if (error) {
-        return callback(error);
+        return callback({data: null, code: 500});
       }
 
-      return callback(null);
+      return callback({data: 'success', code: 200});
 
     });
 
@@ -71,9 +71,9 @@ export class MainController {
     this.model.update(conditions, update, options, (error: any) => {
 
       if (error) {
-        return callback(error);
+        return callback({data: null, code: 500});
       }
-      return callback(null);
+      return callback({data: 'success', code: 200});
 
     });
 

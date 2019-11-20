@@ -2,8 +2,7 @@ import express from 'express';
 import {Router} from 'express';
 import cookieParse from 'cookie-parser';
 
-import UserController from '../controllers/UserController';
-// import model from 'models';
+import UserController from '../controllers/user-controller';
 
 const router = Router();
 
@@ -21,68 +20,99 @@ router.get('/createUser', (req, res) => {
       username: req.query.username,
       password: req.query.password
     }
-  ], (data: any) => {
+  ], (result: any) => {
 
-    console.log('in UserController.create', data);
+    console.log('in router createUser:', result);
+
+    res.end(JSON.stringify({
+      data: result.data,
+      code: result.code
+    }));
 
   });
 
-  res.end(JSON.stringify({
-    data: 'goto createUser',
-    code: 200
-  }));
-});
-
-/**
- * 增加用户
- */
-router.get('/addUser', (req, res) => {
-  console.log('in addUser: req', req);
-
-  res.end(JSON.stringify({
-    data: 'goto addUser',
-    code: 200
-  }));
 });
 
 /**
  * 删除用户
  */
 router.get('/deleteUser', (req, res) => {
-  res.end(JSON.stringify({
-    data: 'goto deleteUser',
-    code: 200
-  }));
+
+  UserController.delete(req.query, (result: any) => {
+
+    console.log('in router deleteUser:', result);
+
+    res.end(JSON.stringify({
+      data: result.data,
+      code: result.code
+    }));
+
+  });
+
 });
 
 /**
  * 查询用户
  */
-router.get('/queryUser', (req, res) => {
-  res.end(JSON.stringify({
-    data: 'goto queryUser',
-    code: 200
-  }));
+router.get('/getUser', (req, res) => {
+
+  console.log('in router queryUser query:', req.query);
+
+  UserController.query(req.query, (result: any) => {
+
+    console.log('in router queryUser:', result.data);
+
+    res.end(JSON.stringify({
+      data: result.data,
+      code: result.code
+    }));
+
+  });
+
 });
 
 /**
  * 增加用户列表
  */
 router.get('/getUserList', (req, res) => {
-  res.end(JSON.stringify({
-    data: 'goto getUserList',
-    code: 200
-  }));
+
+  UserController.getAll((result: any) => {
+
+    console.log('in router getUserList:', result.data);
+
+    res.end(JSON.stringify({
+      data: result.data,
+      code: result.code
+    }));
+
+  });
+
 });
 
 /**
  * 修改用户
  */
 router.get('/updateUser', (req, res) => {
-  res.end(JSON.stringify({
-    data: 'goto updateUser',
-    code: 200
-  }));
+
+  UserController.update({
+      _id: req.query.id
+    },
+    {
+      $set: {
+        username: req.query.username,
+        password: req.query.password
+      }
+    }, {multi: true}, (result: any) => {
+
+    console.log('in router updateUser:', result.data);
+
+    res.end(JSON.stringify({
+      data: result.data,
+      code: result.code
+    }));
+
+  });
+
 });
 
 router.post('/login', async (req, res) => {
