@@ -1,18 +1,62 @@
 import express from 'express';
-import {Router} from 'express';
 import cookieParse from 'cookie-parser';
+import util from 'util';
 
 import UserController from '../controllers/user-controller';
 
-const router = Router();
+const userRouter = express.Router();
 
-router.use(cookieParse());
-router.use(express.urlencoded({ extended: true }));
+userRouter.use(cookieParse());
+userRouter.use(express.urlencoded({ extended: false }));
+
+userRouter.post('/', (req, res) => {
+  console.log('Cookies: ' + util.inspect(req.cookies));
+
+  res.send({
+    cookies: util.inspect(req.cookies),
+    code: 200
+  });
+});
 
 /**
  * 创建用户
  */
-router.get('/createUser.vm', (req, res) => {
+userRouter.post('/createUser.vm', UserController.createUser);
+
+/**
+ * 删除用户
+ */
+userRouter.post('/deleteUser.vm', UserController.deleteUser);
+
+/**
+ * 查询用户
+ */
+userRouter.post('/getUser.vm', UserController.getUser);
+
+/**
+ * 增加用户列表
+ */
+userRouter.post('/getUserList.vm', UserController.getUserList);
+
+/**
+ * 修改用户
+ */
+userRouter.post('/updateUser.vm', UserController.updateUser);
+
+/*
+userRouter.get('/get_user', UserController.getUser);
+
+userRouter.post('/list_user', UserController.listUser);
+
+userRouter.get('/ab*cd', (req, res) => {
+  console.log('/ab*cd GET 请求');
+  res.send('正则匹配');
+});
+
+/!**
+ * 创建用户
+ *!/
+userRouter.get('/createUser.vm', (req, res) => {
   console.log('in createUser: req', req);
 
   UserController.create([
@@ -22,77 +66,77 @@ router.get('/createUser.vm', (req, res) => {
     }
   ], (result: any) => {
 
-    console.log('in router createUser:', result);
+    console.log('in userRouter createUser:', result);
 
-    res.end(JSON.stringify({
+    res.send({
       data: result.data,
       code: result.code
-    }));
+    });
 
   });
 
 });
 
-/**
+/!**
  * 删除用户
- */
-router.get('/deleteUser.vm', (req, res) => {
+ *!/
+userRouter.get('/deleteUser.vm', (req, res) => {
 
   UserController.delete(req.query, (result: any) => {
 
-    console.log('in router deleteUser:', result);
+    console.log('in userRouter deleteUser:', result);
 
-    res.end(JSON.stringify({
+    res.send({
       data: result.data,
       code: result.code
-    }));
+    });
 
   });
 
 });
 
-/**
+/!**
  * 查询用户
- */
-router.get('/getUser.vm', (req, res) => {
+ *!/
+userRouter.get('/getUser.vm', (req, res) => {
 
-  console.log('in router queryUser query:', req.query);
+  console.log('in userRouter queryUser query:', req.query);
 
   UserController.query(req.query, (result: any) => {
 
-    console.log('in router queryUser:', result.data);
+    console.log('in userRouter queryUser:', result.data);
 
-    res.end(JSON.stringify({
+    res.send({
       data: result.data,
       code: result.code
-    }));
+    });
 
   });
 
 });
 
-/**
+/!**
  * 增加用户列表
- */
-router.get('/getUserList.vm', (req, res) => {
+ *!/
+userRouter.get('/getUserList.vm', (req, res) => {
 
   UserController.getAll((result: any) => {
 
-    console.log('in router getUserList:', result.data);
+    console.log('in userRouter getUserList:', result.data);
 
-    res.end(JSON.stringify({
+    res.send({
       data: result.data,
       code: result.code
-    }));
+    });
 
   });
 
 });
 
-/**
+/!**
  * 修改用户
- */
-router.get('/updateUser.vm', (req, res) => {
+ *!/
+userRouter.get('/updateUser.vm', (req, res) => {
 
   UserController.update({
       _id: req.query.id
@@ -104,199 +148,18 @@ router.get('/updateUser.vm', (req, res) => {
       }
     }, {multi: true}, (result: any) => {
 
-    console.log('in router updateUser:', result.data);
+    console.log('in userRouter updateUser:', result.data);
 
-    res.end(JSON.stringify({
+    res.send({
       data: result.data,
       code: result.code
-    }));
-
-  });
-
-});
-
-/**
- * 创建用户
- */
-router.post('/createUser.vm', (req, res) => {
-  console.log('in createUser: req', req);
-
-  let reqBody: any = '';
-
-  // 获取请求体数据
-  req.on('data', chunk => {
-    reqBody += chunk;
-  });
-
-  // 请求数据获取完成
-  req.on('end', () => {
-
-    reqBody = JSON.parse(reqBody || '{}');
-
-    console.log('in createUser: req.body', reqBody);
-
-    UserController.create([
-      {
-        username: reqBody.username,
-        password: reqBody.password
-      }
-    ], (result: any) => {
-
-      console.log('in router createUser:', result);
-
-      res.end(JSON.stringify({
-        data: result.data,
-        code: result.code
-      }));
-
     });
 
   });
 
 });
+*/
 
-/**
- * 删除用户
- */
-router.post('/deleteUser.vm', (req, res) => {
 
-  let reqBody: any = '';
-
-  // 获取请求体数据
-  req.on('data', chunk => {
-    reqBody += chunk;
-  });
-
-  // 请求数据获取完成
-  req.on('end', () => {
-
-    reqBody = JSON.parse(reqBody || '{}');
-
-    console.log('in createUser: req.body', reqBody);
-
-    UserController.delete(reqBody, (result: any) => {
-
-      console.log('in router deleteUser:', result);
-
-      res.end(JSON.stringify({
-        data: result.data,
-        code: result.code
-      }));
-
-    });
-
-  });
-
-});
-
-/**
- * 查询用户
- */
-router.post('/getUser.vm', (req, res) => {
-
-  console.log('in router queryUser query:', req.query);
-
-  let reqBody: any = '';
-
-  // 获取请求体数据
-  req.on('data', chunk => {
-    reqBody += chunk;
-  });
-
-  // 请求数据获取完成
-  req.on('end', () => {
-
-    reqBody = JSON.parse(reqBody || '{}');
-
-    console.log('in createUser: req.body', reqBody);
-
-    UserController.query(reqBody, (result: any) => {
-
-      console.log('in router queryUser:', result.data);
-
-      res.end(JSON.stringify({
-        data: result.data,
-        code: result.code
-      }));
-
-    });
-
-  });
-
-});
-
-/**
- * 增加用户列表
- */
-router.post('/getUserList.vm', (req, res) => {
-
-  let reqBody: any = '';
-
-  // 获取请求体数据
-  req.on('data', chunk => {
-    reqBody += chunk;
-  });
-
-  // 请求数据获取完成
-  req.on('end', () => {
-
-    reqBody = JSON.parse(reqBody || '{}');
-
-    console.log('in createUser: req.body', reqBody);
-
-    UserController.getAll((result: any) => {
-
-      console.log('in router getUserList:', result.data);
-
-      res.end(JSON.stringify({
-        data: result.data,
-        code: result.code
-      }));
-
-    });
-
-  });
-
-});
-
-/**
- * 修改用户
- */
-router.post('/updateUser.vm', (req, res) => {
-
-  let reqBody: any = '';
-
-  // 获取请求体数据
-  req.on('data', chunk => {
-    reqBody += chunk;
-  });
-
-  // 请求数据获取完成
-  req.on('end', () => {
-
-    reqBody = JSON.parse(reqBody || '{}');
-
-    console.log('in createUser: req.body', reqBody);
-
-    UserController.update({
-        _id: reqBody.id
-      },
-      {
-        $set: reqBody
-      }, {}, (result: any) => {
-
-        console.log('in router updateUser:', result.data);
-
-        res.end(JSON.stringify({
-          data: result.data,
-          code: result.code
-        }));
-
-      });
-
-  });
-
-});
-
-export default router;
+export default userRouter;
 

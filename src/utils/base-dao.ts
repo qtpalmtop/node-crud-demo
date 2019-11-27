@@ -1,20 +1,19 @@
 /**
- * Created with Sublime Text3.
- * User: 李霖
- * Date: 19-11-19
- * Time: 下午4:34
- * To change this template use File | Settings | File Templates.
+ * Created by lilin on 19-11-19
  */
 
-
-export class MainController {
+export class BaseDao {
   model: any;
 
   constructor(newModel: any) {
     this.model = newModel;
   }
 
-  // create
+  /**
+   * 创建
+   * @param docs any[] 新建对象集合
+   * @param callback function
+   */
   create(docs: any[], callback: any) {
 
     this.model.create(docs, (error: any) => {
@@ -27,9 +26,14 @@ export class MainController {
 
   }
 
-  query(params: string, callback: any) {
+  /**
+   * 查询
+   * @param params any 查询条件
+   * @param callback function
+   */
+  query(conditions: any, callback: any) {
 
-    this.model.findOne(params, (error: any, result: any) => {
+    this.model.findOne(conditions, (error: any, result: any) => {
 
       if (error) {
         return callback({data: null, code: 500});
@@ -40,6 +44,10 @@ export class MainController {
 
   }
 
+  /**
+   * 查询所有数据
+   * @param callback function
+   */
   getAll(callback: any) {
     this.model.find({}, (error: any, result: any) => {
 
@@ -52,9 +60,14 @@ export class MainController {
     });
   }
 
-  delete(query: any, callback: any) {
+  /**
+   * 删除
+   * @param params any 删除条件
+   * @param callback function
+   */
+  delete(conditions: any, callback: any) {
 
-    this.model.remove(query, (error: any) => {
+    this.model.remove(conditions, (error: any) => {
 
       if (error) {
         return callback({data: null, code: 500});
@@ -66,9 +79,16 @@ export class MainController {
 
   }
 
-  update(conditions: any, update: any, options: any, callback: any) {
+  /**
+   * 更新
+   * @param conditions any 更新条件
+   * @param doc any 更新后的对象
+   * @param options any 更新选项
+   * @param callback function
+   */
+  update(conditions: any, doc: any, options: any, callback: any) {
 
-    this.model.update(conditions, update, options, (error: any) => {
+    this.model.update(conditions, doc, options, (error: any) => {
 
       if (error) {
         return callback({data: null, code: 500});
@@ -80,3 +100,5 @@ export class MainController {
   }
 
 }
+
+

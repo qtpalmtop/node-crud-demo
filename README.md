@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 # template-node-ts
 node+typescript 增删查改示例WebApp
+=======
+# node-crud-demo
+>>>>>>> update(node-crud-demo): 完善项目整体结构
 
-node-ts项目的基本模板
+node-crud-demo项目的基本模板
 
 ``` bash
 $ npx ts-node ./src/index.ts
@@ -17,4 +21,4 @@ $ npm run compiler
 # 将TS编译成js
 ```
 
-其他细节请移步[wiki](https://github.com/fish-node/template-node-ts/wiki)
+其他细节请移步[nodejs](http://nodejs.cn/api/)
