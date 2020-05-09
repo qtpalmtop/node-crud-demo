@@ -1,7 +1,7 @@
 import express from 'express';
 import cookieParse from 'cookie-parser';
 
-import JsonController from '../controllers/json-controller';
+import JsonController from '../controllers/json.controller';
 
 const jsonRouter = express.Router();
 

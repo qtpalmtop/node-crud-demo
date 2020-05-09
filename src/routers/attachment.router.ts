@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParse from 'cookie-parser';
 import multer from 'multer';
 
-import AttachmentController from '../controllers/attachment-controller';
+import AttachmentController from '../controllers/attachment.controller';
 
 const attachmentRouter = express.Router();
 
