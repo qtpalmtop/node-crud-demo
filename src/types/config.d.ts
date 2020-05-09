@@ -8,4 +8,7 @@ export interface SystemConfig {
 
   // 上传地址
   uploadPath: string;
+
+  // json存放地址
+  jsonPath: string;
 }
