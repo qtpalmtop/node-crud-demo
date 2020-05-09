@@ -2,13 +2,16 @@ import express from 'express';
 import cookieParse from 'cookie-parser';
 import util from 'util';
 
-import UserController from '../controllers/user-controller';
+import UserController from '../controllers/user.controller';
 
 const userRouter = express.Router();
 
 userRouter.use(cookieParse());
 userRouter.use(express.urlencoded({ extended: false }));
 
+/**
+ * 解析cookies
+ */
 userRouter.post('/', (req, res) => {
   console.log('Cookies: ' + util.inspect(req.cookies));
 
