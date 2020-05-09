@@ -13,11 +13,10 @@ export default new Promise((resolve, reject) => {
     if (!error) {
       console.log('数据库连接成功');
       resolve(true);
-    }
-
-    else {
+    } else {
       console.log('数据库连接失败', error);
       reject(error);
     }
+
   });
 });
