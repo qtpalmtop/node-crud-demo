@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { BaseDao } from '../utils/base-dao';
-import attachmentModel from '../models/attachment-model';
+import attachmentModel from '../models/attachment.model';
 import systemConfig from '../config';
 
 const AttachmentDao = new BaseDao(attachmentModel);

@@ -2,7 +2,7 @@ import util from 'util';
 import crypto from 'crypto';
 
 import { BaseDao } from '../utils/base-dao';
-import userModel from '../models/user-model';
+import userModel from '../models/user.model';
 
 const userDao = new BaseDao(userModel);
 
@@ -142,16 +142,24 @@ const UserController = {
       // 解析请求体
       reqBody = JSON.parse(reqBody || '{}');
 
-      reqBody.password = crypto.createHash('sha256').update(reqBody.password).digest('hex');
+      const updateParams = Object.assign({}, reqBody);
 
-      console.log('in createUser: req.body', reqBody);
+      if (updateParams.id) {
+        delete updateParams.id;
+      }
+
+      if (updateParams.password) {
+        updateParams.password = crypto.createHash('sha256').update(reqBody.password).digest('hex');
+      }
+
+      console.log('in updateUser: req.body', reqBody);
 
       // 数据库中更新用户
       userDao.update({
           _id: reqBody.id
         },
         {
-          $set: reqBody
+          $set: updateParams
         }, {}, (result: any) => {
 
           res.send(result);
